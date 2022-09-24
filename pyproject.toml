@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "skysmart"
+version = "0.0.9"
+description = ""
+authors = ["tkgoose <62938191+tkgoose@users.noreply.github.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+bs4 = "^0.0.1"
+aiogram = { git = "https://github.com/aiogram/aiogram.git", branch = "dev-3.x" }
+lxml = "^4.8.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
