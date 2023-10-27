@@ -1,18 +1,18 @@
 [tool.poetry]
-name = "skysmart"
-version = "0.0.9"
+name = "schoolbot"
+version = "0.1.0"
 description = ""
-authors = ["tkgoose <62938191+tkgoose@users.noreply.github.com>"]
+authors = ["consteremnaresinf <sandaar.ykt@gmail.com>"]
 license = "MIT"
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
+aiogram = "^3.1.1"
 bs4 = "^0.0.1"
-aiogram = { git = "https://github.com/aiogram/aiogram.git", branch = "dev-3.x" }
-lxml = "^4.8.0"
+user-agent = "^0.1.10"
 
-[tool.poetry.dev-dependencies]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

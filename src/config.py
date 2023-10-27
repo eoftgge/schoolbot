@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-from typing import Optional
 from abc import ABC, abstractmethod
 
 from .skysmart.models.user import LoginPasswordPair
@@ -38,7 +37,7 @@ class UserConfig(AbstractConfig):
 
     def to_pair(self) -> LoginPasswordPair:
         return LoginPasswordPair(
-            phoneOrEmail=self.login,
+            login=self.login,
             password=self.password
         )
 
@@ -46,18 +45,6 @@ class UserConfig(AbstractConfig):
 class SkyConfig(AbstractConfig):
     def get_path(self) -> str:
         return "sky.config"
-
-    @property
-    def token(self) -> Optional[str]:
-        return token if (token := self._config_parser.get(self.get_path(), "token")) != "" else None
-
-    def is_token(self) -> bool:
-        return self.token != ""
-
-    def set_token(self, token: str):
-        self._config_parser.set(self.get_path(), "token", token)
-        with open(self.get_config_path(), "w") as file:
-            self._config_parser.write(file)
 
 
 class TelegramConfig(AbstractConfig):
@@ -96,4 +83,4 @@ def get_path_config(path: str) -> str:
     elif path in listdir("."):
         return "./" + path
 
-    raise FileNotFoundError(f"`{name}` isn't exists..")
+    raise FileNotFoundError(f"`{path}` isn't exists..")

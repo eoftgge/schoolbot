@@ -1,11 +1,13 @@
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
 class UserInformation(BaseModel):
-    name: str = Field(...)
-    surname: str = Field(...)
+    name: Optional[str] = Field(None)
+    surname: Optional[str] = Field(None)
 
 
 class LoginPasswordPair(BaseModel):
-    login: str = Field(..., alias="phoneOrEmail")
+    login: str = Field(..., alias="email", validation_alias="login")
     password: str = Field(...)

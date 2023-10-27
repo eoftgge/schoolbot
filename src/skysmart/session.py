@@ -2,8 +2,9 @@ import json
 import logging
 import re
 
+import user_agent
 from bs4 import BeautifulSoup
-from typing import Optional, Dict
+from typing import Optional, Dict, Self
 from aiohttp import ClientSession
 
 from src.skysmart.models.xml import ExerciseMeta, ExerciseXml
@@ -16,22 +17,29 @@ logger = logging.getLogger(__name__)
 class SkySmartSession:
     def __init__(
         self,
-        access_token: Optional[str] = None,
         client: Optional[ClientSession] = None
     ):
-        self.access_token = access_token
+        self.access_token: Optional[str] = None
         self.client = client or ClientSession()
+
+    @classmethod
+    async def from_pair(cls, pair: LoginPasswordPair) -> Self:
+        session = cls()
+        await session.authenticate(pair)
+        return session
 
     @staticmethod
     def _cleanup(text: str) -> str:
-        return re.sub(u"[^\x20-\x7f]+", u"", text)
+        while '\n\n' in text:
+            text = text.replace('\n\n', '\n')
+        return text.strip()
 
     @staticmethod
     def _get_headers(content_type: Optional[str] = None) -> Dict[str, str]:
         return {
             "Content-Type": content_type or "application/json",
             "Accept": "application/json; charset=UTF-8",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:99.0) Gecko/20100101 Firefox/99.0"
+            "User-Agent": user_agent.generate_user_agent()
         }
 
     def _get_headers_with_token(self, content_type: Optional[str] = None) -> Dict[str, str]:
@@ -47,26 +55,34 @@ class SkySmartSession:
     def is_token(self) -> bool:
         return self.access_token is not None
 
+    def reset_access_token(self, access_token: str):
+        self.access_token = access_token
+
     async def authenticate(self, pair: LoginPasswordPair) -> Optional[str]:
         """
-        Authenticate and get access token
+        Authenticate(reset) and get access token
         :param pair: bind login and password
-        :return: None or access token
+        :return: jwt token for future requests
          """
-        if self.is_token():
-            return None
-        return await self.get_access_token(pair)
+        self.access_token = await self.get_access_token(pair)
+        logger.debug(f"The value of access_token: {self.access_token}")
+        return self.access_token
 
-    async def get_access_token(self, pair: LoginPasswordPair) -> str:
+    async def get_access_token(self, pair: LoginPasswordPair) -> Optional[str]:
         """
         Get access token from SkySmartSession
         :param pair: bind login and password
         :return: access token
         """
         async with self.client.request(
-            method="POST", url=LOGIN_REQUEST, data=pair.json(by_alias=True), headers=self._get_headers(),
+            method="POST",
+            url=LOGIN_REQUEST,
+            data=pair.model_dump_json(by_alias=True),
+            headers={"User-Agent": user_agent.generate_user_agent()},
         ) as response:
-            return (await response.json())["jwtToken"]
+            response: dict = await response.json()
+            logger.debug(f"Sent a request, and got the response: {response}")
+            return response.get("jwtToken")
 
     async def get_information(self) -> UserInformation:
         """
@@ -76,7 +92,9 @@ class SkySmartSession:
         async with self.client.request(
             method="POST", url=INFORMATION, headers=self._get_headers_with_token()
         ) as response:
-            return UserInformation(**(await response.json()))
+            response = await response.json()
+            logger.debug(f"Sent a request, and got the response: {response}")
+            return UserInformation(**response)
 
     async def get_answer_xml_uuids(self, task: str) -> ExerciseMeta:
         """
@@ -98,7 +116,9 @@ class SkySmartSession:
         async with self.client.request(
              method="GET", url=XML + uuid, headers=self._get_headers_with_token("plain/text")
         ) as response:
-            response = ExerciseXml(**(await response.json()))
+            response = await response.json()
+            logger.debug(f"Sent a request (XML), and got the response: {response}")
+            response = ExerciseXml(**response)
             content = self._cleanup(response.content)
             response.soup = BeautifulSoup(content, "lxml")
             response.title = exercise.meta.steps_meta[uuid].title

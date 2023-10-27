@@ -2,6 +2,7 @@ import logging
 import json
 from typing import Dict
 
+from aiogram.filters import Command
 from aiohttp import ClientSession
 from bs4 import BeautifulSoup
 
@@ -34,7 +35,7 @@ async def get_schedules(client: ClientSession) -> Dict:
         return json.loads(strip_unnecessary(body))
 
 
-@router.message(commands=["расписание", "расписания", "schedule"])
+@router.message(Command("расписание", "расписания", "schedule"))
 async def schedule(msg: types.Message):
     client = ClientSession()
 

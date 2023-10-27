@@ -5,15 +5,15 @@ from aiogram import Bot, Dispatcher
 
 from src.config import Config, get_path_config
 from src.bot.handlers import include_routers
-from src.skysmart.utils import create_session
+from src.skysmart.session import SkySmartSession
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 PATH_CONFIG = "config.ini"
 
 
 async def main():
     config = Config(get_path_config(PATH_CONFIG))
-    session = await create_session(config)
+    session = await SkySmartSession.from_pair(config.user_config.to_pair())
     bot = Bot(token=config.telegram_config.token, parse_mode="HTML")
     dp = Dispatcher()
 
