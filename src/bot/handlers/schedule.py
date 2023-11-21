@@ -1,6 +1,6 @@
 import logging
 import json
-from typing import Dict
+from typing import Dict, Optional
 
 from aiogram.filters import Command
 from aiohttp import ClientSession
@@ -12,7 +12,7 @@ router = Router(name=__name__)
 logger = logging.getLogger(__name__)
 
 URL_SCHEDULE = "http://raspisanie.nikasoft.ru"
-URL_PARSE = URL_SCHEDULE + "/29406899.html#cls"
+URL_PARSE = URL_SCHEDULE + "/40811550.html#cls"
 
 
 def strip_unnecessary(text: str) -> str:
@@ -35,15 +35,24 @@ async def get_schedules(client: ClientSession) -> Dict:
         return json.loads(strip_unnecessary(body))
 
 
-@router.message(Command("расписание", "расписания", "schedule"))
+@router.message(Command("расписание", "расписания", "schedule", "р", "s"))
 async def schedule(msg: types.Message):
     client = ClientSession()
+    arg = "".join(msg.text.split()[1:])
 
     try:
         schedules = await get_schedules(client)
-        default_class = schedules["CLASSES"]["029"]
+        classes = schedules["CLASSES"]
+        need_key: Optional[str] = None
+        for key, value in classes.items():
+            if value != arg:
+                continue
+            need_key = key
+            break
 
+        await msg.reply(f"key {need_key}")
         print(json.dumps(schedules, indent=4, ensure_ascii=False))
+        print(schedules["CLASS_SCHEDULE"]["27"][need_key])
     finally:
         await client.close()
 
