@@ -1,0 +1,7 @@
+[user.config]
+login = login@gmail.com
+password = password
+
+[telegram.config]
+token = 1233245:AbcdefIdinaxui
+
