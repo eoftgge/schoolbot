@@ -1,15 +1,13 @@
 import logging
-from typing import Dict, Union
 
 from aiogram import types, Router
 from aiogram.filters.callback_data import CallbackData
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.filters import Command
 
-from ..utils.parser import ExerciseParser
-from ..utils.utils import get_task_code
+from src.skysmart.parser.exercise import ExerciseParser
+from src.skysmart.utils import get_task_code
 from ...skysmart.models.xml import ExerciseMeta
 from ...skysmart.session import SkySmartSession
 
