@@ -13,7 +13,6 @@ bs4 = "^0.0.1"
 user-agent = "^0.1.10"
 lxml = "^4.9.3"
 
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
