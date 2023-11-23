@@ -37,7 +37,9 @@ class XmlParser:
 
             match node.name:
                 case "vim-iframe":
-                    self.push_text("К сожалению, этот вопрос является видеоигрой. Мы не умеем решать это")
+                    self.push_text(
+                        "К сожалению, этот вопрос является видеоигрой. Мы не умеем решать это"
+                    )
                 case "vim-groups":
                     self.set_groups(node)
                 case "vim-test":
@@ -72,13 +74,18 @@ class XmlParser:
             items = vim.find_all("vim-groups-item")
             one = base64.decodebytes(items[0]["text"].encode("utf-8"))
             two = base64.decodebytes(items[1]["text"].encode("utf-8"))
-            self.push_text(f"Сопоставьте «{one.decode('utf-8')}» -> «{two.decode('utf-8')}»")
+            self.push_text(
+                f"Сопоставьте «{one.decode('utf-8')}» -> «{two.decode('utf-8')}»"
+            )
 
         return self
 
     def set_test(self, node: Tag) -> Self:
         number = 1
-        self.push_text(node.find("vim-test-question-text").get_text(strip=True).removesuffix(".") + ":")
+        self.push_text(
+            node.find("vim-test-question-text").get_text(strip=True).removesuffix(".")
+            + ":"
+        )
 
         for answer in node.find_all("vim-test-item", correct=True):
             self.push_text(f"{number} - {answer.get_text()}")
@@ -99,7 +106,11 @@ class XmlParser:
         return self
 
     def set_select(self, node: Tag) -> Self:
-        element = node.find("vim-select-item", correct=True).find("vim-select-item-title").get_text(strip=True)
+        element = (
+            node.find("vim-select-item", correct=True)
+            .find("vim-select-item-title")
+            .get_text(strip=True)
+        )
         self.push_text(f"Выбери: {element}")
         return self
 
@@ -113,7 +124,9 @@ class XmlParser:
             list_of_ids = []
 
             for answer_id in ids:
-                list_of_ids.append(drags.find(attrs={"answer-id": answer_id}).get_text())
+                list_of_ids.append(
+                    drags.find(attrs={"answer-id": answer_id}).get_text()
+                )
 
             self.push_text(f"{number} - {' /ИЛИ/ '.join(list_of_ids)}")
             number += 1

@@ -30,12 +30,16 @@ async def cancel_task(message: types.Message, state: FSMContext) -> None:
 
 
 @router.message(StateTask.STATE_CODE)
-async def process_code(message: types.Message, state: FSMContext, session: SkySmartSession) -> None:
+async def process_code(
+    message: types.Message, state: FSMContext, session: SkySmartSession
+) -> None:
     code = get_task_code(message.text)
     exercise = await session.get_answer_xml_uuids(code)
 
     if not exercise.success:
-        await message.reply("Неодобрительно.. Твой код задачи не является валидным. Попробуй ещё раз..")
+        await message.reply(
+            "Неодобрительно.. Твой код задачи не является валидным. Попробуй ещё раз.."
+        )
         return
 
     outbound_message = await message.reply(

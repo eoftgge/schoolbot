@@ -36,10 +36,7 @@ class UserConfig(AbstractConfig):
             self._config_parser.write(file)
 
     def to_pair(self) -> LoginPasswordPair:
-        return LoginPasswordPair(
-            login=self.login,
-            password=self.password
-        )
+        return LoginPasswordPair(login=self.login, password=self.password)
 
 
 class SkyConfig(AbstractConfig):

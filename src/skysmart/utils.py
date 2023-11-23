@@ -14,9 +14,7 @@ def get_task_code(link_or_code: str) -> str:
 
 
 async def get_str_result(
-    exercise: ExerciseMeta,
-    code: str,
-    session: SkySmartSession
+    exercise: ExerciseMeta, code: str, session: SkySmartSession
 ) -> str:
     parser = ExerciseParser(code, exercise)
 

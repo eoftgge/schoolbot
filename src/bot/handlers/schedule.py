@@ -17,7 +17,7 @@ URL_PARSE = URL_SCHEDULE + "/40811550.html#cls"
 
 def strip_unnecessary(text: str) -> str:
     texts = text.split()
-    return (" ".join(texts[texts.index("NIKA=") + 1:])).rstrip(";")
+    return (" ".join(texts[texts.index("NIKA=") + 1 :])).rstrip(";")
 
 
 async def get_schedules(client: ClientSession) -> Dict:
