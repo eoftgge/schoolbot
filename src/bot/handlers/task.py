@@ -1,13 +1,13 @@
 import logging
 
-from aiogram import types, Router
-from aiogram.fsm.context import FSMContext
+from aiogram import Router, types
 from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
 
-from src.skysmart.utils import get_task_code, get_str_result
-from ..commands import TASK_COMMAND, TASK_CANCEL_COMMAND
-from ..states.task import StateTask
-from ...skysmart.session import SkySmartSession
+from src.bot.commands import TASK_CANCEL_COMMAND, TASK_COMMAND
+from src.bot.states.task import StateTask
+from src.skysmart.session import SkySmartSession
+from src.skysmart.utils import get_str_result, get_task_code
 
 router = Router(name=__name__)
 logger = logging.getLogger(__name__)

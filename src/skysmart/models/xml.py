@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List, Dict
+from typing import Dict, List, Optional
+
 from bs4 import BeautifulSoup
+from pydantic import BaseModel, Field
 
 from .error import Error
 from .user import UserInformation

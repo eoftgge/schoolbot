@@ -1,12 +1,11 @@
-import logging
 import json
+import logging
 from typing import Dict, Optional
 
+from aiogram import Router, types
 from aiogram.filters import Command
 from aiohttp import ClientSession
 from bs4 import BeautifulSoup
-
-from aiogram import types, Router
 
 router = Router(name=__name__)
 logger = logging.getLogger(__name__)

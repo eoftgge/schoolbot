@@ -1,10 +1,10 @@
 import base64
-
-from typing import List, Self
 from logging import getLogger
-from bs4.element import Tag, NavigableString
+from typing import List, Self
 
-from src.skysmart.models.xml import ExerciseXml, ExerciseMeta
+from bs4.element import NavigableString, Tag
+
+from src.skysmart.models.xml import ExerciseMeta, ExerciseXml
 
 logger = getLogger(__name__)
 

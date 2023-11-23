@@ -1,4 +1,4 @@
-from aiogram import types, Router
+from aiogram import Router, types
 from aiogram.filters.command import Command
 
 HELLO_TEXT = (

@@ -1,14 +1,15 @@
 import json
 import logging
+from typing import Dict, Optional, Self
 
 import user_agent
-from bs4 import BeautifulSoup
-from typing import Optional, Dict, Self
 from aiohttp import ClientSession
+from bs4 import BeautifulSoup
 
-from src.skysmart.models.xml import ExerciseMeta, ExerciseXml
 from src.skysmart.models.user import LoginPasswordPair, UserInformation
-from .constants import LOGIN_REQUEST, INFORMATION, PREVIEW, XML
+from src.skysmart.models.xml import ExerciseMeta, ExerciseXml
+
+from .constants import INFORMATION, LOGIN_REQUEST, PREVIEW, XML
 
 logger = logging.getLogger(__name__)
 

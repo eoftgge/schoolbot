@@ -1,10 +1,10 @@
-import logging
 import asyncio
+import logging
 
 from aiogram import Bot, Dispatcher
 
-from src.config import Config, get_path_config
 from src.bot.handlers import include_routers
+from src.config import Config, get_path_config
 from src.skysmart.session import SkySmartSession
 
 logging.basicConfig(level=logging.DEBUG)
