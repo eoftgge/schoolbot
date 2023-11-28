@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 router = Router(name=__name__)
 logger = logging.getLogger(__name__)
 
-URL_SCHEDULE = "http://raspisanie.nikasoft.ru"
+URL_SCHEDULE = "https://raspisanie.nikasoft.ru"
 URL_PARSE = URL_SCHEDULE + "/40811550.html#cls"
 
 
