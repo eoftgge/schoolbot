@@ -52,8 +52,13 @@ class XmlParser:
                     self.set_dnd_text(node)
                 case "vim-strike-out":
                     self.set_strike_out_item(node)
+                case "vim-dnd-group":
+                    self.set_dnd_group(node)
 
-            if vim_input_many := node.find_all("vim-input"):
+            if math_input_many := node.find_all("math-input"):
+                for math_input in math_input_many:
+                    self.set_math_input(math_input)  # ебучая матеша
+            elif vim_input_many := node.find_all("vim-input"):
                 for vim_input in vim_input_many:
                     self.set_input(vim_input)
             elif vim_strike_many := node.find_all("vim-strike-out-item", striked=True):
@@ -63,6 +68,25 @@ class XmlParser:
                 for vim_select in vim_select_many:
                     self.set_select(vim_select)
 
+        return self
+
+    def set_dnd_group(self, node: Tag) -> Self:
+        drags: dict[str, str] = {}
+        for drag in node.find_all("vim-dnd-group-drag"):
+            drags[drag["answer-id"]] = drag.get_text(strip=True)
+        for group in node.find_all("vim-dnd-group-item"):
+            self.push_text(
+                "— "
+                + group.find("vim-dnd-group-item-caption").get_text(strip=True)
+                + ":"
+            )
+            for drag_id in group["drag-ids"].split(","):
+                self.push_text(drags[drag_id])
+        return self
+
+    def set_math_input(self, node: Tag) -> Self:
+        answer = node.find("math-input-answer").get_text(strip=True)
+        self.push_text(f"Напиши: {answer}")
         return self
 
     def set_strike_out_item(self, node: Tag) -> Self:
@@ -75,7 +99,7 @@ class XmlParser:
             one = base64.decodebytes(items[0]["text"].encode("utf-8"))
             two = base64.decodebytes(items[1]["text"].encode("utf-8"))
             self.push_text(
-                f"Сопоставьте «{one.decode('utf-8')}» -> «{two.decode('utf-8')}»"
+                f"Сопоставьте «{one.decode('utf-8')}» с «{two.decode('utf-8')}»"
             )
 
         return self
