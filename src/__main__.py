@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
 
 from src.bot.handlers import include_routers
 from src.config import Config, get_path_config
@@ -14,7 +15,7 @@ PATH_CONFIG = "config.ini"
 async def main():
     config = Config(get_path_config(PATH_CONFIG))
     session = await SkySmartSession.from_pair(config.user_config.to_pair())
-    bot = Bot(token=config.telegram_config.token, parse_mode="HTML")
+    bot = Bot(token=config.telegram_config.token, parse_mode=ParseMode.MARKDOWN.value)
     dp = Dispatcher()
 
     include_routers(dp)

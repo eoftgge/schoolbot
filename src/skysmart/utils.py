@@ -4,7 +4,7 @@ from src.skysmart.models.xml import ExerciseMeta
 from src.skysmart.parser.exercise import ExerciseParser
 from src.skysmart.session import SkySmartSession
 
-COMPILED_CODE = re.compile(r"edu\.skysmart\.ru\/student\/(\S+)")
+COMPILED_CODE = re.compile(r"edu\.skysmart\.ru/student/(\S+)")
 
 
 def get_task_code(link_or_code: str) -> str:

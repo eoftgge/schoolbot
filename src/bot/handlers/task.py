@@ -20,7 +20,7 @@ async def process_task(
     command: CommandObject,
 ):
     if command.args is None:
-        await message.answer("Пример команды (без кавычек): /task «ссылка»")
+        await message.answer("Пример команды (без кавычек): `/task ссылка`")
         return
 
     code = get_task_code(command.args)
@@ -28,12 +28,12 @@ async def process_task(
 
     if not exercise.success:
         await message.reply(
-            "Неодобрительно... Твой код задачи не является валидным. Попробуй ещё раз с другим кодом задачи..."
+            "Неодобрительно... Твой код задачи не является валидным. Попробуй ещё раз с другим кодом задачи"
         )
         return
 
     outbound_message = await message.reply(
-        "Хорошо! Принял твои данные в обработку, имейте совесть и подождите..."
+        "Хорошо! Принял твои данные в обработку, имейте совесть и подождите"
     )
     result = await get_str_result(exercise, code, session)
 

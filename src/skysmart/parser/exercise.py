@@ -13,7 +13,7 @@ class ExerciseParser:
         return self._result
 
     def get_link(self) -> str:
-        return f"https://edu.skysmart.ru/student/{self._code_task}"
+        return f"[ссылка](https://edu.skysmart.ru/student/{self._code_task})"
 
     def increment_number(self) -> int:
         self._number += 1
