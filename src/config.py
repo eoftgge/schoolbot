@@ -53,6 +53,15 @@ class TelegramConfig(AbstractConfig):
         return self._config_parser.get(self.get_path(), "token")
 
 
+class GptConfig(AbstractConfig):
+    def get_path(self) -> str:
+        return "chat-gpt.config"
+
+    @property
+    def token(self) -> str:
+        return self._config_parser.get(self.get_path(), "token")
+
+
 class Config:
     def __init__(self, path: str):
         self._config_parser = ConfigParser()
@@ -70,6 +79,10 @@ class Config:
     @property
     def sky_config(self) -> SkyConfig:
         return SkyConfig(self._config_parser, self._config_path)
+
+    @property
+    def gpt_config(self) -> GptConfig:
+        return GptConfig(self._config_parser, self._config_path)
 
 
 def get_path_config(path: str) -> str:

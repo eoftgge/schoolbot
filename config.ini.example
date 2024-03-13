@@ -4,3 +4,7 @@ password = password
 
 [telegram.config]
 token = 1233245:AbcdefIdinaxui
+
+
+[chat-gpt.config]
+token = sk-asdadsaFdsGFd543rwfedvds

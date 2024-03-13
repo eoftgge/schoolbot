@@ -79,7 +79,7 @@ class SkySmartSession:
             data=pair.model_dump_json(by_alias=True),
             headers={"User-Agent": user_agent.generate_user_agent()},
         ) as response:
-            response: dict = await response.json()
+            response = await response.json()
             logger.debug(f"Sent a request, and got the response: {response}")
             return response.get("jwtToken")
 

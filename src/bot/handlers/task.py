@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 async def process_task(
     message: types.Message,
     state: FSMContext,
-    session: SkySmartSession,
+    sky_session: SkySmartSession,
     command: CommandObject,
 ):
     if command.args is None:
@@ -24,7 +24,7 @@ async def process_task(
         return
 
     code = get_task_code(command.args)
-    exercise = await session.get_answer_xml_uuids(code)
+    exercise = await sky_session.get_answer_xml_uuids(code)
 
     if not exercise.success:
         await message.reply(
@@ -35,7 +35,7 @@ async def process_task(
     outbound_message = await message.reply(
         "Хорошо! Принял твои данные в обработку, имейте совесть и подождите"
     )
-    result = await get_str_result(exercise, code, session)
+    result = await get_str_result(exercise, code, sky_session)
 
     await outbound_message.edit_text(result)
     await state.clear()
